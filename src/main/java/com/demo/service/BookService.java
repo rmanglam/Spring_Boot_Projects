@@ -5,16 +5,17 @@ import com.demo.dao.BookRepository;
 import com.demo.entites.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
     public List<Book> getAllBook(){
-        List<Book>list  =(List<Book>)this.bookRepository.findAll();
+        List<Book> list  =(List<Book>)this.bookRepository.findAll();
         return list;
     }
 
@@ -30,6 +31,20 @@ public class BookService {
         }
         return book;
     }
+
+
+    public Book findBookByTitle(String title){
+        Book book = null;
+        try {
+            book=this.bookRepository.findByTitle(title);
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return book;
+    }
+
+
+
 
 public Book addbook(Book b){
     Book result = bookRepository.save(b);

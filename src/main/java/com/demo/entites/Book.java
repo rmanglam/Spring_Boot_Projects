@@ -1,28 +1,29 @@
 package com.demo.entites;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 
 @Entity
 public class Book {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String titel;
-    private String author;
+    private String title;
 
-    public Book(int id, String titel, String author) {
-        this.id = id;
-        this.titel = titel;
-        this.author = author;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Author author;
 
     public Book() {
+    }
 
+    public Book(int id, String title, Author author) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
     }
 
     public int getId() {
@@ -33,19 +34,19 @@ public class Book {
         this.id = id;
     }
 
-    public String getTitel() {
-        return titel;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitel(String titel) {
-        this.titel = titel;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -53,8 +54,8 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", titel='" + titel + '\'' +
-                ", author='" + author + '\'' +
+                ", titel='" + title + '\'' +
+                ", author=" + author +
                 '}';
     }
 }

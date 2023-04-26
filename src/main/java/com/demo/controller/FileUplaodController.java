@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 public class FileUplaodController {
@@ -24,15 +25,16 @@ try{
         if (file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Request must contain file");
         }
-        if (file.getContentType().equals("image/jpg")) {
+        if (!file.getContentType().equals("image/jpeg")) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("only JPEG file allow");
         }
 
-
-      boolean f=  fileUploadHelper.uploadFile(file);
+                // FILE UPLOAD CODE
+          boolean f=  fileUploadHelper.uploadFile(file);
 
         if (f){
-            return ResponseEntity.ok("file is uploaded");
+           // return ResponseEntity.ok("file is uploaded");
+                return ResponseEntity.ok(ServletUriComponentsBuilder.fromCurrentContextPath().path("/image/").path(file.getOriginalFilename()).toUriString());
         }
 
 
